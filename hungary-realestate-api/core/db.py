@@ -1,12 +1,9 @@
 #!/usr/bin/python3
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-engine = create_engine('mysql://root:liujiuqi990929@localhost/Rent', connect_args={"check_same_thread": False})
+engine = create_engine('mysql+pymysql://root:liujiuqi990929@localhost:3306/rent_db')
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 session = SessionLocal()
-
-Base = declarative_base(bind=engine, name='Base')
