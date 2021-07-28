@@ -12,6 +12,7 @@ python-multipart = "*"
 passlib = "*"
 python-jose = "*"
 bcrypt = "*"
+pyjwt = "*"
 
 [dev-packages]
 autopep8 = "*"
