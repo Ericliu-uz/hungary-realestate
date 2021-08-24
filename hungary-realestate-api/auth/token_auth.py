@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from datetime import datetime, timedelta
-from typing import Optional, Dict
+from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -8,18 +8,16 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from pydantic import BaseModel
 from core.db import session
-from services.operations_user import get_user_by_username
+from services.user import get_user_by_username
 
 app06 = APIRouter()
 
-# def create_user_db(form_data: OAuth2PasswordRequestForm = Depends()):
-#     users_db = Dict[form_data.username, dict(get_user_by_username(session, form_data.username))]
-#     return users_db
+users_db = {}
 
 
 class User(BaseModel):
     username: str
-    email: str
+    password: str
 
 
 class UserInDB(User):
@@ -32,7 +30,6 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 10
 
 
 class Token(BaseModel):
-    """返回给用户的Token"""
     access_token: str
     token_type: str
 
@@ -53,10 +50,10 @@ def jwt_get_user(user_table, username: str):
 
 
 def jwt_authenticate_user(user_table, username: str, password: str):
-    user = jwt_get_user(db=user_table, username=username)
+    user = jwt_get_user(user_table=user_table, username=username)
     if not user:
         return False
-    if not verity_password(plain_passord=password, hashed_password=user.hashed_password):
+    if not verity_password(plain_password=password, hashed_password=user.hashed_password):
         return False
     return user
 
@@ -74,8 +71,10 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 
 @app06.post("/jwt/token", response_model=Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
-    users_db = Dict[form_data.username, dict(get_user_by_username(session, form_data.username))]  # 合理
-    user = jwt_authenticate_user(db=users_db, username=form_data.username, password=form_data.password)
+
+    global users_db
+    users_db = {form_data.username: eval(str(get_user_by_username(session, form_data.username)))}
+    user = jwt_authenticate_user(user_table=users_db, username=form_data.username, password=form_data.password)
     if not user:
         raise HTTPException(
             status.HTTP_401_UNAUTHORIZED,
@@ -102,7 +101,7 @@ async def jwt_get_current_user(token: str = Depends(oauth2_schema)):
             raise credentials_exception
     except JWTError:
         raise credentials_exception
-    user = jwt_get_user(db=users_db, username=username)
+    user = jwt_get_user(user_table=users_db, username=username)
     if user is None:
         raise credentials_exception
     return user

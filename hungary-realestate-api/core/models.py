@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
 from datetime import datetime
+
+from passlib.context import CryptContext
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, DateTime, Integer, func, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
@@ -17,18 +19,23 @@ class User(Base):
     u_contact = Column(Integer, nullable=False, unique=True, comment="telephone number")
     u_email = Column(String(30), nullable=False, unique=True)
     u_hashed_password = Column(String(45), nullable=True)
+
     user_interested = relationship("UserInterested", back_populates="user")
 
-    # create_at = Column(DateTime, default=datetime.now, comment="created")
-    # update_at = Column(DateTime, default=datetime.now, onupdate=func.now(), comment="updated")
+    create_at = Column(DateTime, default=datetime.now, comment="created")
+    update_at = Column(DateTime, default=datetime.now, onupdate=func.now(), comment="updated")
+
+    def set_hashed_password(self, password):
+        self.u_hashed_password = CryptContext(schemes=["bcrypt"], deprecated="auto").hash(password)
+
     def __repr__(self):
         return "{" + '"username":"{}","password":"{}","hashed_password":"{}"'.format(self.u_username, self.u_password, self.u_hashed_password) + "}"
 
 
-class House(Base):
-    __tablename__ = "house_info"
+class Property(Base):
+    __tablename__ = "properties"
     h_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    h_type = Column(String(30), nullable=False)
+    h_type = Column(Integer, nullable=False)
     h_postcode = Column(Integer, nullable=False)
     h_city = Column(String(30), comment="city name", nullable=False)
     h_street = Column(String(30), comment="street name", nullable=False)
@@ -36,29 +43,23 @@ class House(Base):
     h_floor = Column(Integer, comment="in which floor", nullable=False)
     h_rooms = Column(Integer, comment="how many bedrooms", nullable=False)
     h_rent = Column(Integer, comment="price", nullable=False)
-    #isDeleted
-    #isActive
+    isDeleted = Column(Boolean, nullable=False)
+    isActive = Column(Boolean, nullable=False)
 
     user_interested = relationship("UserInterested", back_populates="house")
-    #status = relationship("Status", back_populates="house")
 
     create_at = Column(DateTime, default=datetime.now, comment="created")
     update_at = Column(DateTime, default=datetime.now, onupdate=func.now(), comment="updated")
+
+    def __repr__(self):
+        return "{" + "'h_type':'{}','h_postcode':'{}','h_city':'{}','h_street':'{}','h_number':'{}','h_floor':'{}','h_rooms':'{}','h_rent':'{}'".format(self.h_type, self.h_postcode, self.h_city, self.h_street , self.h_number, self.h_floor, self.h_rooms, self.h_rent) + "}"
 
 
 class UserInterested(Base):
     __tablename__ = "usr_interested"
     i_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     i_uid = Column(Integer, ForeignKey('sys_usr.u_id'), comment="user info")
-    i_hid = Column(Integer, ForeignKey('house_info.h_id'), comment="house info")
-    house = relationship("House", back_populates="user_interested")
+    i_hid = Column(Integer, ForeignKey('properties.h_id'), comment="property info")
+
+    house = relationship("Property", back_populates="user_interested")
     user = relationship("User", back_populates="user_interested")
-
-
-# class Status(Base):
-#     __tablename__ = "status"
-#     s_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-#     s_active = Column(Boolean, nullable=False)
-#     s_expired_time = Column(DateTime, nullable=False)
-#     s_hid = Column(Integer, ForeignKey('house_info.h_id'), comment="house info")
-#     house = relationship("House", back_populates="status")

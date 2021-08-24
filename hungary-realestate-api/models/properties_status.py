@@ -14,8 +14,8 @@ class Status(Base):
     s_active = Column(Boolean, nullable=False)
     s_expired_time = Column(DateTime, nullable=False)
     s_hid = Column(Integer, ForeignKey('house_info.h_id'), comment="house info")
+
     house = relationship("House", back_populates="status")
 
-    create_at = Column(DateTime, default=datetime.now, comment="created")
-    update_at = Column(DateTime, default=datetime.now, onupdate=func.now(), comment="updated")
+
 

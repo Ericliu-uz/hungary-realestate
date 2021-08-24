@@ -18,8 +18,12 @@ class House(Base):
     h_number = Column(Integer, comment="house number", nullable=False)
     h_floor = Column(Integer, comment="in which floor", nullable=False)
     h_rooms = Column(Integer, comment="how many bedrooms", nullable=False)
+    h_rent = Column(Integer, comment="price", nullable=False)
+    #isDeleted
+    #isActive
+
     user_interested = relationship("UserInterested", back_populates="house")
-    status = relationship("Status", back_populates="house")
+    #status = relationship("Status", back_populates="house")
 
     create_at = Column(DateTime, default=datetime.now, comment="created")
     update_at = Column(DateTime, default=datetime.now, onupdate=func.now(), comment="updated")

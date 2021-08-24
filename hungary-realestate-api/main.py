@@ -10,7 +10,10 @@ from core.schemas import *
 from core.db import session
 from core.logger import logger
 import models
+
 from auth.token_auth import app06
+from api.properties import app01
+from api.user import app02
 
 
 app = FastAPI(
@@ -33,12 +36,13 @@ app.add_middleware(
 )
 
 app.include_router(app06, prefix='/chapter06', tags=['User Authentication & Login'])
+app.include_router(app01, prefix='/chapter01', tags=['Properties'])
+app.include_router(app02, prefix='/chapter02', tags=['Users'])
 
 #
 # @app.get("/")
 # async def root():
 #     return {"message": "Hello World"}
 
-
 if __name__ == '__main__':
-    uvicorn.run(app, host='0.0.0.0', port=8000, reload=True, debug=True, workers=1)
+    uvicorn.run('main:app', host='0.0.0.0', port=8000, reload=True, debug=True, workers=1)

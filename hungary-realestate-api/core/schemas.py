@@ -6,46 +6,44 @@ from datetime import datetime
 
 
 class CreateUser(BaseModel):
-    username: constr(max_length=20)
-    fullname: str
-    password: constr(min_length=6)
-    contact_number: int
-    email: EmailStr
-    hashed_password: Optional[str] = None
+    u_username: constr(max_length=20)
+    u_fullname: str
+    u_password: constr(min_length=6)
+    u_contact: int
+    u_email: EmailStr
+    u_hashed_password: Optional[str] = None
 
 
-class CreateHouse(BaseModel):
-    type: str
-    postcode: int
-    city: str
-    street: str
-    house_number: int
-    floor: int = 0
-    rooms: int = 0
+class CreateProperty(BaseModel):
+    h_type: int = 1
+    h_postcode: int
+    h_city: str
+    h_street: str
+    h_number: int
+    h_floor: int
+    h_rooms: int = 1
+    h_rent: int
+    isDeleted: bool = False
+    isActive: bool = True
 
 
 class CreateUserInterested(BaseModel):
     pass
 
 
-class CreateStatus(BaseModel):
-    active: bool
-    expired_time: datetime
-
-
 class ReadUser(CreateUser):
-    id: int
-    # create_at: datetime
-    # update_at: datetime
+    u_id: int
+    create_at: datetime
+    update_at: datetime
 
     class Config:
         orm_mode = True
 
 
-class ReadHouse(CreateHouse):
-    id: int
-    # create_at: datetime
-    # update_at: datetime
+class ReadProperty(CreateProperty):
+    h_id: int
+    create_at: datetime
+    update_at: datetime
 
     class Config:
         orm_mode = True
@@ -53,23 +51,13 @@ class ReadHouse(CreateHouse):
 
 class ReadUserInterested(CreateUserInterested):
     id: int
-    # u_id: int
     h_id: int
-    # create_at: datetime
-    # update_at: datetime
 
     class Config:
         orm_mode = True
 
 
-class ReadStatus(CreateStatus):
-    id: int
-    h_id: int
-    # create_at: datetime
-    # update_at: datetime
 
-    class Config:
-        orm_mode = True
 
 
 
