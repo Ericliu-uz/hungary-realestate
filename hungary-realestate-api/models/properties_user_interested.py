@@ -16,5 +16,3 @@ class UserInterested(Base):
     house = relationship("House", back_populates="user_interested")
     user = relationship("User", back_populates="user_interested")
 
-    create_at = Column(DateTime, default=datetime.now, comment="created")
-    update_at = Column(DateTime, default=datetime.now, onupdate=func.now(), comment="updated")
