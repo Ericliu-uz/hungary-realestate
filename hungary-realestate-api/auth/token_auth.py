@@ -16,6 +16,7 @@ users_db = {}
 
 
 class User(BaseModel):
+    uid: int
     username: str
     password: str
 
@@ -110,3 +111,5 @@ async def jwt_get_current_user(token: str = Depends(oauth2_schema)):
 @app06.get("/jwt/users/me")
 async def jwt_read_users_me(current_user: User = Depends(jwt_get_current_user)):
     return current_user
+
+

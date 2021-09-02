@@ -24,6 +24,7 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 from core import models
 from core.db import Base, session, engine
+from auth.token_auth import jwt_get_current_user, oauth2_schema
 
 Base.metadata.create_all(bind=engine)
 
@@ -119,8 +120,16 @@ def get_db():
 
 # update_property(db=session, house_id=4, h_type=2)
 
-def get_user_by_username(db: Session, usr_name: str):
-    return db.query(models.User).filter(models.User.u_username == usr_name).first()
+# def get_user_by_username(db: Session, usr_name: str):
+#     return db.query(models.User).filter(models.User.u_username == usr_name).first()
+#
+#
+# print(get_user_by_username(db=session, usr_name="ericliu"))
 
-
-print(get_user_by_username(db=session, usr_name="ericliu"))
+d1 = {"a": 1, "b": 2}
+print(d1)
+d2 = d1.update({"a": 3})
+print(d2)
+d3 = d1
+d3["a"] = 3
+print(d3)
