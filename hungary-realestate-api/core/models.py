@@ -20,8 +20,9 @@ class User(Base):
     u_email = Column(String(30), nullable=False, unique=True)
     u_hashed_password = Column(String(45), nullable=True)
 
-    user_interested = relationship("UserInterested", back_populates="user")
+    properties = relationship("Property", back_populates="user")
 
+    # user_interested = relationship("UserInterested", back_populates="user")
     create_at = Column(DateTime, default=datetime.now, comment="created")
     update_at = Column(DateTime, default=datetime.now, onupdate=func.now(), comment="updated")
 
@@ -29,7 +30,7 @@ class User(Base):
         self.u_hashed_password = CryptContext(schemes=["bcrypt"], deprecated="auto").hash(password)
 
     def __repr__(self):
-        return "{" + '"username":"{}","password":"{}","hashed_password":"{}"'.format(self.u_username, self.u_password, self.u_hashed_password) + "}"
+        return "{" + '"uid":"{}","username":"{}","password":"{}","hashed_password":"{}"'.format(self.u_id, self.u_username, self.u_password, self.u_hashed_password) + "}"
 
 
 class Property(Base):
@@ -46,8 +47,10 @@ class Property(Base):
     isDeleted = Column(Boolean, nullable=False)
     isActive = Column(Boolean, nullable=False)
 
-    user_interested = relationship("UserInterested", back_populates="house")
+    user_id = Column(Integer, ForeignKey('sys_usr.u_id'))
+    user = relationship("User", back_populates="properties")
 
+    # user_interested = relationship("UserInterested", back_populates="house")
     create_at = Column(DateTime, default=datetime.now, comment="created")
     update_at = Column(DateTime, default=datetime.now, onupdate=func.now(), comment="updated")
 
@@ -55,11 +58,11 @@ class Property(Base):
         return "{" + "'h_type':'{}','h_postcode':'{}','h_city':'{}','h_street':'{}','h_number':'{}','h_floor':'{}','h_rooms':'{}','h_rent':'{}'".format(self.h_type, self.h_postcode, self.h_city, self.h_street , self.h_number, self.h_floor, self.h_rooms, self.h_rent) + "}"
 
 
-class UserInterested(Base):
-    __tablename__ = "usr_interested"
-    i_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    i_uid = Column(Integer, ForeignKey('sys_usr.u_id'), comment="user info")
-    i_hid = Column(Integer, ForeignKey('properties.h_id'), comment="property info")
-
-    house = relationship("Property", back_populates="user_interested")
-    user = relationship("User", back_populates="user_interested")
+# class UserInterested(Base):
+#     __tablename__ = "usr_interested"
+#     i_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+#     i_uid = Column(Integer, ForeignKey('sys_usr.u_id'), comment="user info")
+#     i_hid = Column(Integer, ForeignKey('properties.h_id'), comment="property info")
+#
+#     house = relationship("Property", back_populates="user_interested")
+#     user = relationship("User", back_populates="user_interested")

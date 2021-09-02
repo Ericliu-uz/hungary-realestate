@@ -3,6 +3,7 @@ from typing import Optional
 
 from sqlalchemy.orm import Session
 from core import schemas, models
+from sqlalchemy import and_
 
 
 def create_property(db: Session, house: schemas.CreateProperty):
@@ -14,7 +15,7 @@ def create_property(db: Session, house: schemas.CreateProperty):
 
 
 def property_is_existed(db: Session, new_property: schemas.CreateProperty):
-    if db.query(models.Property).filter(models.Property.h_street == new_property.h_street and models.Property.h_floor == new_property.h_floor and models.Property.h_number == new_property.h_number).first():
+    if db.query(models.Property).filter(and_(models.Property.h_street == new_property.h_street, models.Property.h_floor == new_property.h_floor, models.Property.h_number == new_property.h_number)).first():
         return True
     else:
         return False
@@ -46,9 +47,8 @@ def update_property(db: Session, house_id: int, h_type: Optional[int] = None, h_
     db.commit()
 
 
-
-def get_property(db: Session, house_id: int):
-    return db.query(models.Property).filter(models.Property.h_id == house_id).first()
+def get_my_properties(db: Session, user_id: int):
+    return eval(str(db.query(models.Property).filter(models.Property.user_id == user_id).all()))
 
 
 def get_properties(db: Session, h_type: Optional[int] = None, h_city: Optional[str] = None, h_street: Optional[str] = None, h_floor: Optional[int] = None, h_rooms: Optional[int] = None, skip: int = 0, limit: int = 10):
