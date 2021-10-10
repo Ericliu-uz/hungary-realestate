@@ -11,6 +11,7 @@
   },
   "plugins": ["module-resolver", "prettier", "react-hooks"],
   "rules": {
+    "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-shadow": "error",
     "@typescript-eslint/no-use-before-define": "error",
     "import/extensions": [
@@ -36,7 +37,8 @@
       }
     ],
     "react/jsx-props-no-spreading": "off",
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "react/require-default-props": "off"
   },
   "settings": {
     "import/resolver": {
