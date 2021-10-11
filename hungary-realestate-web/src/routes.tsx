@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { BrowserRouter as Router, Route, RouteProps, Redirect, Switch } from 'react-router-dom';
 import { useAuth } from 'auth';
-import { Home, Login } from 'pages';
+import { Home, Login, Signup } from 'pages';
 import { Spinner } from 'components';
 
 const PrivateRoute: FC<RouteProps> = ({ children, ...rest }) => {
@@ -27,6 +27,9 @@ export default () => {
         </Route>
         <Route exact path="/login">
           <Login />
+        </Route>
+        <Route exact path="/signup">
+          <Signup />
         </Route>
         <PrivateRoute path="/properties/create">
           <Home />
