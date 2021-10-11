@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Form, Input, Layout, Space } from 'antd';
+import { Link, useHistory } from 'react-router-dom';
+import { Button, Form, Input, Layout, message, Space } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { useAuth } from 'auth';
 import styled from 'styles';
 import { Card } from 'components';
 
@@ -15,8 +16,16 @@ const StyledSpace = styled(Space)`
 `;
 
 export const Login: FC = () => {
-  const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
+  const history = useHistory();
+  const { login } = useAuth();
+
+  const onFinish = async (values: any) => {
+    try {
+      await login(values);
+      history.replace('/');
+    } catch (errMsg) {
+      message.error(errMsg as string);
+    }
   };
 
   return (
