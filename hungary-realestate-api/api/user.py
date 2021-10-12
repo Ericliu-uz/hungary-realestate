@@ -30,9 +30,14 @@ def create_user(new_user: schemas.CreateUser, db: Session = Depends(get_db)):
     return user.create_user(db=db, user=new_user)
 
 
-@app02.post("/user_update", dependencies=[Depends(jwt_get_current_user)])
+@app02.put("/user", dependencies=[Depends(jwt_get_current_user)])
 async def update_user(token: str = Depends(oauth2_schema), db: Session = Depends(get_db), u_fullname: Optional[str] = None, u_contact: Optional[int] = None, u_email: Optional[str] = None):
     current_user = (await jwt_get_current_user(token))
     user_id = current_user.uid
     return user.update_user(db=db, user_id=user_id, u_fullname=u_fullname, u_contact=u_contact, u_email=u_email)
+
+
+@app02.get("/user/me")
+async def read_users_me(current_user: User = Depends(jwt_get_current_user)):
+    return current_user
 

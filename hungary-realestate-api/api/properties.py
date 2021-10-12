@@ -56,7 +56,7 @@ def get_properties(db: Session = Depends(get_db), p_type: Optional[int] = None, 
     return {"current_page": current_page, "page_count": page_count, "page_size": page_size, "results": results}
 
 
-@app01.get("/my_properties", dependencies=[Depends(jwt_get_current_user)])
+@app01.get("/properties", dependencies=[Depends(jwt_get_current_user)])
 async def get_my_properties(token: str = Depends(oauth2_schema), db: Session = Depends(get_db)):
     current_user = (await jwt_get_current_user(token))
     current_uid = current_user.uid
@@ -64,7 +64,7 @@ async def get_my_properties(token: str = Depends(oauth2_schema), db: Session = D
     return res
 
 
-@app01.post("/my_properties_update/{property_id}", dependencies=[Depends(get_my_properties)])
+@app01.put("/properties/{property_id}", dependencies=[Depends(get_my_properties)])
 def update_my_properties(db: Session = Depends(get_db), property_id: int = 0, h_type: Optional[int] = None, h_postcode: Optional[int] = None, h_city: Optional[str] = None, h_street: Optional[str] = None, h_number: Optional[int] = None, h_floor: Optional[int] = None, h_rooms: Optional[int] = None, h_rent: Optional[int] = None):
 
     return properties.update_property(db, property_id, h_type, h_postcode, h_city, h_street, h_number, h_floor, h_rooms, h_rent)

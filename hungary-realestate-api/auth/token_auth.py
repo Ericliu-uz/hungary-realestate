@@ -37,7 +37,7 @@ class Token(BaseModel):
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-oauth2_schema = OAuth2PasswordBearer(tokenUrl="/chapter06/jwt/token")
+oauth2_schema = OAuth2PasswordBearer(tokenUrl="/auth/token")
 
 
 def verity_password(plain_password: str, hashed_password: str):
@@ -70,7 +70,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     return encoded_jwt
 
 
-@app06.post("/jwt/token", response_model=Token)
+@app06.post("/token", response_model=Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
 
     global users_db
@@ -108,8 +108,5 @@ async def jwt_get_current_user(token: str = Depends(oauth2_schema)):
     return user
 
 
-@app06.get("/jwt/users/me")
-async def jwt_read_users_me(current_user: User = Depends(jwt_get_current_user)):
-    return current_user
 
 

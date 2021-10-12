@@ -6,10 +6,6 @@ from fastapi.responses import HTMLResponse
 from sqlalchemy import func
 from starlette.middleware.cors import CORSMiddleware
 
-from core.schemas import *
-from core.db import session
-from core.logger import logger
-import models
 
 from auth.token_auth import app06
 from api.properties import app01
@@ -28,6 +24,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://127.0.0.1",
+        "http://localhost:3000",
         "http://127.0.0.1:8080"
     ],
     allow_credentials=True,
@@ -35,9 +32,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(app06, prefix='/chapter06', tags=['User Authentication & Login'])
-app.include_router(app01, prefix='/chapter01', tags=['Properties'])
-app.include_router(app02, prefix='/chapter02', tags=['Users'])
+app.include_router(app06, prefix='/auth', tags=['User Authentication & Login'])
+app.include_router(app01, prefix='/api', tags=['Properties'])
+app.include_router(app02, prefix='/api', tags=['Users'])
 
 #
 # @app.get("/")
