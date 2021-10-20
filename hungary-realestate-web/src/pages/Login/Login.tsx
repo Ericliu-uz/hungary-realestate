@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { Button, Form, Input, Layout, message, Space } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useAuth } from 'auth';
@@ -17,12 +17,14 @@ const StyledSpace = styled(Space)`
 
 export const Login: FC = () => {
   const history = useHistory();
+  const location = useLocation<{ from: string }>();
   const { login } = useAuth();
+  const { from } = location.state || { from: { pathname: '/' } };
 
-  const onFinish = async (values: any) => {
+  const onFinish = async (values: AuthRequestValues) => {
     try {
       await login(values);
-      history.replace('/');
+      history.replace(from);
     } catch (errMsg) {
       message.error(errMsg as string);
     }

@@ -4,26 +4,11 @@ interface AuthRequestValues {
 }
 
 interface AuthResponseValues {
-  token: string;
-}
-
-interface RoleModel {
-  roleId: number;
-  roleName: string;
+  access_token: string;
 }
 
 interface UserModel {
-  bannerId: string;
-  buygroupId: number;
-  companyName: string;
-  countryId: number;
-  email: string;
-  isAgreeTerm: boolean;
-  logoUrl: string;
-  newPassword: string | null;
   password: string;
-  personName: string;
-  roles: RoleModel[];
   userId: string;
   userName: string;
 }
@@ -42,8 +27,6 @@ interface AuthContextModel {
 }
 
 interface UpdatePasswordValues {
-  email: string;
-  personName: string;
-  userName: string;
+  username: string;
   newPassword: string;
 }

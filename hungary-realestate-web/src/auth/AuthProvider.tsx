@@ -1,6 +1,4 @@
-import React, { FC, createContext, useState, useEffect, useMemo, useContext } from 'react';
-import axios from 'axios';
-import { StatusCodes } from 'http-status-codes';
+import React, { createContext, FC, useContext, useEffect, useMemo, useState } from 'react';
 import { fetchUser, loginAsync } from './AuthService';
 
 const TOKEN_KEY = 'token';
@@ -31,20 +29,6 @@ export const AuthProvider: FC = ({ children }) => {
       } else {
         await logout();
       }
-      axios.interceptors.response.use(
-        (res) => res,
-        async ({ response }) => {
-          console.error(response);
-          return Promise.reject(response);
-          // switch (response?.status) {
-          //   case StatusCodes.UNAUTHORIZED:
-          //     logout();
-          //   // eslint-disable-next-line no-fallthrough
-          //   default:
-          //     return Promise.reject(response);
-          // }
-        },
-      );
     };
 
     bootstrapAsync();
@@ -53,8 +37,8 @@ export const AuthProvider: FC = ({ children }) => {
   const login = async (data: AuthRequestValues) => {
     try {
       const res = await loginAsync(data);
-      await handleLogin(res.token);
-      return Promise.resolve(res.token);
+      await handleLogin(res.access_token);
+      return Promise.resolve(res.access_token);
     } catch (error) {
       return Promise.reject(error);
     }

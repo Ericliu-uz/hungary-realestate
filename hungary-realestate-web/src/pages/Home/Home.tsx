@@ -1,71 +1,60 @@
 import React, { FC } from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Layout } from 'antd';
+import { useHistory } from 'react-router-dom';
+import { Input, Layout } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import styled from 'styles';
 import bannerBg from 'assets/cover.jpeg';
-import { Logo } from 'components';
+import { Header } from 'components';
 
-const { Header } = Layout;
+const { Search } = Input;
 
 const Banner = styled.div<{ bg: string }>`
-  position: absolute;
   width: 100%;
-  height: 60vh;
+  height: 40vh;
   background-image: url(${(props) => props.bg});
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
 `;
 
-const StyledHeader = styled(Header)`
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: transparent;
-`;
-
-const LogoContainer = styled.div`
-  display: flex;
-  align-items: center;
+const SearchBoxContainer = styled.div`
+  width: 1000px;
+  margin: 100px auto;
+  padding: ${({ theme }) => theme.size.spacing.xl}px;
+  background-color: rgba(0, 0, 0, 0.6);
 `;
 
 const Title = styled.h1`
-  margin-bottom: 0;
-  margin-left: ${({ theme }) => theme.size.spacing.sm}px;
+  margin-left: 0;
+  margin-bottom: ${({ theme }) => theme.size.spacing.sm}px;
   color: ${({ theme }) => theme.palette.paper[0]};
-  font-weight: 700;
-`;
-
-const StyledButton = styled(Button)`
-  width: 100px;
-  color: ${({ theme }) => theme.palette.paper[0]};
-  font-weight: 700;
+  font-weight: 400;
 `;
 
 export const Home: FC = () => {
-  console.log('render home');
+  const history = useHistory();
+
+  const onSearch = (value: string) => {
+    console.log(value);
+    history.push('/properties');
+  };
+
   return (
     <Layout>
-      <Banner bg={bannerBg} />
-      <StyledHeader>
-        <LogoContainer>
-          <Logo height={50} />
-          <Title>Hungary Realestate</Title>
-        </LogoContainer>
-        <span>
-          <Link to="/login">
-            <StyledButton size="large" type="link" ghost>
-              Sign in
-            </StyledButton>
-          </Link>
-          <Link to="/signup">
-            <StyledButton size="large" ghost>
-              Join
-            </StyledButton>
-          </Link>
-        </span>
-      </StyledHeader>
+      <Banner bg={bannerBg}>
+        <Header transparent />
+        <SearchBoxContainer>
+          <Title>Search rental properties</Title>
+          <Search
+            placeholder="Search by address"
+            allowClear
+            enterButton="Search"
+            size="large"
+            prefix={<SearchOutlined />}
+            onSearch={onSearch}
+          />
+        </SearchBoxContainer>
+      </Banner>
     </Layout>
   );
 };

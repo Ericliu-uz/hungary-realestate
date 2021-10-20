@@ -7,4 +7,8 @@ export const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  .ant-layout {
+    min-height: 100vh;
+  }
 `;

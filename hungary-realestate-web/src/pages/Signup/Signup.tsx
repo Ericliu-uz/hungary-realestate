@@ -17,7 +17,7 @@ const StyledSpace = styled(Space)`
 export const Signup: FC = () => {
   const [form] = Form.useForm();
 
-  const onFinish = (values: any) => {
+  const onFinish = (values: AuthRequestValues) => {
     console.log('Received values of form: ', values);
   };
 
