@@ -1,4 +1,5 @@
-import React, { createContext, FC, useCallback, useContext, useMemo, useState } from 'react';
+import React, { createContext, FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import axios from 'axios';
 import samplePropertiesData from './properties.json';
 
 export interface Property {
@@ -30,6 +31,15 @@ export const PropertyProvider: FC = ({ children }) => {
     },
     [properties],
   );
+
+  useEffect(() => {
+    // fetch properties
+    const fetchProperties = async () => {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}api/properties`);
+      console.log(res);
+    };
+    fetchProperties();
+  }, []);
 
   const value = useMemo(() => ({ properties, add }), [properties, add]);
 

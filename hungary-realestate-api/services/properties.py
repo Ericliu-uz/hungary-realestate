@@ -53,6 +53,10 @@ def get_my_properties(db: Session, user_id: int):
 
 def get_properties(db: Session, h_type: Optional[int] = None, h_city: Optional[str] = None, h_street: Optional[str] = None, h_floor: Optional[int] = None, h_rooms: Optional[int] = None, skip: int = 0, limit: int = 10):
     properties_id = []
+
+    if h_type == h_city == h_street == h_floor == h_rooms is None:
+        return eval(str(db.query(models.Property).all()))
+
     if h_type:
         r1 = [x.h_id for x in db.query(models.Property.h_id).filter(models.Property.h_type == h_type)]
         for x in r1:

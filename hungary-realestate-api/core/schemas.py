@@ -3,7 +3,6 @@ from typing import Optional
 
 from pydantic import BaseModel, constr, EmailStr
 from datetime import datetime
-# from auth.token_auth import jwt_get_current_user
 
 
 class CreateUser(BaseModel):
@@ -51,12 +50,7 @@ class ReadProperty(CreateProperty):
         orm_mode = True
 
 
-# class ReadUserInterested(CreateUserInterested):
-#     id: int
-#     h_id: int
-#
-#     class Config:
-#         orm_mode = True
+
 
 
 

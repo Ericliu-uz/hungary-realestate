@@ -56,7 +56,7 @@ def get_properties(db: Session = Depends(get_db), p_type: Optional[int] = None, 
     return {"current_page": current_page, "page_count": page_count, "page_size": page_size, "results": results}
 
 
-@app01.get("/properties", dependencies=[Depends(jwt_get_current_user)])
+@app01.get("/properties/me", dependencies=[Depends(jwt_get_current_user)])
 async def get_my_properties(token: str = Depends(oauth2_schema), db: Session = Depends(get_db)):
     current_user = (await jwt_get_current_user(token))
     current_uid = current_user.uid
