@@ -9,7 +9,7 @@ module.exports = function (api) {
             assets: './src/assets',
             auth: './src/auth/',
             components: './src/components',
-            // context: './src/context',
+            context: './src/context',
             pages: './src/pages',
             // services: './src/services',
             styles: './src/styles',

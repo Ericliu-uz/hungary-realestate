@@ -5,6 +5,7 @@ import { Icon } from '@material-ui/core';
 import { BathtubOutlined, DriveEtaOutlined, HotelOutlined } from '@material-ui/icons';
 import { first } from 'lodash';
 import styled from 'styles';
+import { Property } from 'context';
 import { Currency } from 'components';
 import PropertyDefaultImage from 'assets/property-default-image.jpeg';
 
@@ -59,19 +60,6 @@ const FacilityItemWithIcon: FC<{ icon: ElementType }> = ({ children, icon }) => 
 
 const StarIcon: FC<{ starred?: boolean; onClick: VoidFunction }> = ({ starred, onClick }) =>
   starred ? <StarIconFilled onClick={onClick} /> : <StarIconOutlined onClick={onClick} />;
-
-export interface Property {
-  id: number;
-  title: string;
-  description?: string;
-  address: string;
-  bedrooms: number;
-  bathrooms: number;
-  garage: number;
-  price: number;
-  type: string;
-  images?: string[] | null;
-}
 
 interface PropertyCardProps {
   property: Property;
