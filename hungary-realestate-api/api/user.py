@@ -37,7 +37,7 @@ async def update_user(token: str = Depends(oauth2_schema), db: Session = Depends
     return user.update_user(db=db, user_id=user_id, u_fullname=u_fullname, u_contact=u_contact, u_email=u_email)
 
 
-@app02.get("/user/me")
+@app02.get("/user")
 async def read_users_me(current_user: User = Depends(jwt_get_current_user)):
     return current_user
 

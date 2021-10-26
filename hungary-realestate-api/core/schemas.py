@@ -20,12 +20,16 @@ class CreateProperty(BaseModel):
     city: str
     street: str
     number: int
-    floor: int
-    rooms: int = 1
+    floor: Optional[int] = 0
+    bedrooms: int
+    bathrooms: int
+    garage: int
     price: int
     isDeleted: bool = False
     isActive: bool = True
     user_id: int
+    title: str
+    description: Optional[str] = None
 
 
 class ReadUser(CreateUser):

@@ -40,9 +40,11 @@ class Property(Base):
     city = Column(String(30), comment="city name", nullable=False)
     street = Column(String(30), comment="street name", nullable=False)
     number = Column(Integer, comment="house number", nullable=False)
-    floor = Column(Integer, comment="in which floor", nullable=False)
-    rooms = Column(Integer, comment="how many bedrooms", nullable=False)
-    price = Column(Integer, comment="price", nullable=False)
+    floor = Column(Integer, comment="in which floor")
+    bedrooms = Column(Integer, comment="how many bedrooms", nullable=False)
+    bathrooms = Column(Integer, nullable=False)
+    garage = Column(Integer, nullable=False)
+    price = Column(Integer, nullable=False)
     title = Column(String(45), nullable=False)
     description = Column(Text(2000))
     isDeleted = Column(Boolean, nullable=False)
@@ -55,6 +57,6 @@ class Property(Base):
     update_at = Column(DateTime, default=datetime.now, onupdate=func.now(), comment="updated")
 
     def __repr__(self):
-        return "{" + "'id':'{}','type':'{}','postcode':'{}','city':'{}','street':'{}','number':'{}','floor':'{}','rooms':'{}','price':'{}','create_at':'{}','update_at':'{}','address':'{}','image':{}".format(self.id, self.type, self.postcode, self.city, self.street, self.number, self.floor, self.rooms, self.price, self.create_at, self.update_at, str(self.number) + ' ' + self.street + ', ' + self.city + ' ' + str(self.postcode), []) + "}"
+        return "{" + "'id':'{}','type':'{}','floor':'{}','bedrooms':'{}','bathrooms':'{}','garage':'{}','price':'{}','create_at':'{}','update_at':'{}','address':'{}','images':{}".format(self.id, self.type, self.floor, self.bedrooms, self.bathrooms, self.garage, self.price, self.create_at, self.update_at, str(self.number) + ' ' + self.street + ', ' + self.city + ' ' + str(self.postcode), []) + "}"
 
 

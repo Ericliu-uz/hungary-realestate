@@ -15,7 +15,7 @@ def create_property(db: Session, house: schemas.CreateProperty):
 
 
 def property_is_existed(db: Session, new_property: schemas.CreateProperty):
-    if db.query(models.Property).filter(and_(models.Property.h_street == new_property.h_street, models.Property.h_floor == new_property.h_floor, models.Property.h_number == new_property.h_number)).first():
+    if db.query(models.Property).filter(and_(models.Property.street == new_property.street, models.Property.floor == new_property.floor, models.Property.number == new_property.number)).first():
         return True
     else:
         return False
@@ -51,10 +51,10 @@ def get_my_properties(db: Session, user_id: int):
     return eval(str(db.query(models.Property).filter(models.Property.user_id == user_id).all()))
 
 
-def get_properties(db: Session, type: Optional[int] = None, city: Optional[str] = None, street: Optional[str] = None, floor: Optional[int] = None, rooms: Optional[int] = None, skip: int = 0, limit: int = 10):
+def get_properties(db: Session, type: Optional[int] = None, city: Optional[str] = None, street: Optional[str] = None, floor: Optional[int] = None, bedrooms: Optional[int] = None, bathrooms: Optional[int] = None, garage: Optional[int] = None, skip: int = 0, limit: int = 10):
     properties_id = []
 
-    if type == city == street == floor == rooms is None:
+    if type == city == street == floor == bedrooms == bathrooms == garage is None:
         return eval(str(db.query(models.Property).all()))
 
     if type:
@@ -89,8 +89,8 @@ def get_properties(db: Session, type: Optional[int] = None, city: Optional[str] 
                 if x not in r4:
                     properties_id.remove(x)
 
-    if rooms:
-        r5 = [x.id for x in db.query(models.Property.id).filter(models.Property.rooms == rooms)]
+    if bedrooms:
+        r5 = [x.id for x in db.query(models.Property.id).filter(models.Property.bedrooms == bedrooms)]
         if not properties_id:
             properties_id.extend(r5)
         else:
@@ -98,11 +98,30 @@ def get_properties(db: Session, type: Optional[int] = None, city: Optional[str] 
                 if x not in r5:
                     properties_id.remove(x)
 
+    if bathrooms:
+        r6 = [x.id for x in db.query(models.Property.id).filter(models.Property.bathrooms == bathrooms)]
+        if not properties_id:
+            properties_id.extend(r6)
+        else:
+            for x in properties_id:
+                if x not in r6:
+                    properties_id.remove(x)
+
+    if garage:
+        r7 = [x.id for x in db.query(models.Property.id).filter(models.Property.garage == garage)]
+        if not properties_id:
+            properties_id.extend(r7)
+        else:
+            for x in properties_id:
+                if x not in r7:
+                    properties_id.remove(x)
+
     return eval(str(db.query(models.Property).filter(models.Property.id.in_(properties_id)).offset(skip).limit(limit).all()))
 
 
-def get_all_properties(db: Session, type: Optional[int] = None, city: Optional[str] = None, street: Optional[str] = None, floor: Optional[int] = None, rooms: Optional[int] = None):
+def get_all_properties(db: Session, type: Optional[int] = None, city: Optional[str] = None, street: Optional[str] = None, floor: Optional[int] = None, bedrooms: Optional[int] = None, bathrooms: Optional[int] = None, garage: Optional[int] = None,):
     properties_id = []
+
     if type:
         r1 = [x.id for x in db.query(models.Property.id).filter(models.Property.type == type)]
         for x in r1:
@@ -135,13 +154,31 @@ def get_all_properties(db: Session, type: Optional[int] = None, city: Optional[s
                 if x not in r4:
                     properties_id.remove(x)
 
-    if rooms:
-        r5 = [x.id for x in db.query(models.Property.id).filter(models.Property.rooms == rooms)]
+    if bedrooms:
+        r5 = [x.id for x in db.query(models.Property.id).filter(models.Property.bedrooms == bedrooms)]
         if not properties_id:
             properties_id.extend(r5)
         else:
             for x in properties_id:
                 if x not in r5:
+                    properties_id.remove(x)
+
+    if bathrooms:
+        r6 = [x.id for x in db.query(models.Property.id).filter(models.Property.bathrooms == bathrooms)]
+        if not properties_id:
+            properties_id.extend(r6)
+        else:
+            for x in properties_id:
+                if x not in r6:
+                    properties_id.remove(x)
+
+    if garage:
+        r7 = [x.id for x in db.query(models.Property.id).filter(models.Property.garage == garage)]
+        if not properties_id:
+            properties_id.extend(r7)
+        else:
+            for x in properties_id:
+                if x not in r7:
                     properties_id.remove(x)
 
     return eval(

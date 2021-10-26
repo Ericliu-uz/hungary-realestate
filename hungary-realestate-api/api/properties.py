@@ -28,7 +28,7 @@ class Properties(BaseModel):
     results: list
 
 
-@app01.post("/property", response_model=schemas.ReadProperty, dependencies=[Depends(jwt_get_current_user)])
+@app01.post("/properties", response_model=schemas.ReadProperty, dependencies=[Depends(jwt_get_current_user)])
 async def create_property(new_property: schemas.CreateProperty, db: Session = Depends(get_db), token: str = Depends(oauth2_schema)):
     if properties.property_is_existed(db=db, new_property=new_property):
         raise HTTPException(status_code=400, detail="Property has been registered")
@@ -44,9 +44,9 @@ async def create_property(new_property: schemas.CreateProperty, db: Session = De
 
 
 @app01.get("/properties", response_model=Properties)
-def get_properties(db: Session = Depends(get_db), p_type: Optional[int] = None, p_city: Optional[str] = None, p_street: Optional[str] = None, p_floor: Optional[int] = None, p_rooms: Optional[int] = None, skip: int = 0, limit: int = 30):
-    results_all = properties.get_all_properties(db=db, type=p_type, city=p_city, street=p_street, floor=p_floor, rooms=p_rooms)
-    results = properties.get_properties(db=db, type=p_type, city=p_city, street=p_street, floor=p_floor, rooms=p_rooms, skip=skip, limit=limit)
+def get_properties(db: Session = Depends(get_db), p_type: Optional[int] = None, p_city: Optional[str] = None, p_street: Optional[str] = None, p_floor: Optional[int] = None, p_bathrooms: Optional[int] = None, p_garage: Optional[int] = None, p_bedrooms: Optional[int] = None, skip: int = 0, limit: int = 30):
+    results_all = properties.get_all_properties(db=db, type=p_type, city=p_city, street=p_street, floor=p_floor, bedrooms=p_bedrooms, bathrooms=p_bathrooms, garage=p_garage)
+    results = properties.get_properties(db=db, type=p_type, city=p_city, street=p_street, floor=p_floor, bedrooms=p_bedrooms, skip=skip, limit=limit)
     page_size = limit
     page_count = len(results_all)/limit
     if skip <= limit:
