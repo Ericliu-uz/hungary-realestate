@@ -1,15 +1,16 @@
 import React, { createContext, FC, useContext, useEffect, useMemo, useState } from 'react';
+import axios from 'axios';
 import { fetchUser, loginAsync } from './AuthService';
 
 const TOKEN_KEY = 'token';
 
-// const setAxiosHeader = (token: string) => {
-//   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-// };
+const setAxiosHeader = (token: string) => {
+  (axios.defaults.headers as unknown as { common: { Authorization: string } }).common.Authorization = `Bearer ${token}`;
+};
 
-// const removeAxiosHeader = () => {
-//   delete axios.defaults.headers.common.Authorization;
-// };
+const removeAxiosHeader = () => {
+  delete axios.defaults.headers?.common;
+};
 
 const AuthContext = createContext<AuthContextModel>({} as AuthContextModel);
 
@@ -47,7 +48,7 @@ export const AuthProvider: FC = ({ children }) => {
   const handleLogin = async (token: string) => {
     try {
       localStorage.setItem(TOKEN_KEY, token);
-      // setAxiosHeader(token);
+      setAxiosHeader(token);
       const user = await fetchUser();
       setAuthState({ token, user, loggedIn: true, loading: false });
     } catch (error) {
@@ -59,7 +60,7 @@ export const AuthProvider: FC = ({ children }) => {
   const logout = async () => {
     try {
       localStorage.removeItem(TOKEN_KEY);
-      // removeAxiosHeader();
+      removeAxiosHeader();
       setAuthState({ token: undefined, user: undefined, loggedIn: false, loading: false });
     } catch (error) {
       console.error(error);

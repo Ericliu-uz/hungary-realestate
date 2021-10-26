@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { Col, Layout, Row } from 'antd';
-// import styled from 'styles';
 import { useProperty } from 'context';
 import { Container, Header, PropertyCard } from 'components';
 
@@ -11,7 +10,7 @@ export const Properties: FC = () => {
       <Header />
       <Container>
         <Row gutter={[40, 40]}>
-          {properties?.map((property) => (
+          {properties.map((property) => (
             <Col key={property.id} xs={12}>
               <PropertyCard property={property} />
             </Col>

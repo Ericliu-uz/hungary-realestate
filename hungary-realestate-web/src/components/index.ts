@@ -1,5 +1,6 @@
 export * from './Card';
 export * from './Currency';
+export * from './CurrencyInput';
 export * from './Header';
 export * from './Logo';
 export * from './PropertyCard';

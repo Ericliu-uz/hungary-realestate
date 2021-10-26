@@ -27,7 +27,7 @@ const LogoContainer = styled(Link)`
 `;
 
 const StyledButton = styled(Button)`
-  width: 100px;
+  min-width: 120px;
   font-weight: 700;
 `;
 
@@ -44,7 +44,11 @@ export const Header: FC<HeaderProps> = ({ transparent }) => {
         <LogoWithTitle height={50} />
       </LogoContainer>
       {authState.loggedIn ? (
-        'Hello'
+        <Link to="/properties/create">
+          <StyledButton size="large" type="primary">
+            Publish Property
+          </StyledButton>
+        </Link>
       ) : (
         <span>
           <Link to="/login">

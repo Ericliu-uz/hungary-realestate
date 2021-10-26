@@ -64,7 +64,7 @@ export const Home: FC = () => {
       <Container>
         <Heading>Featured Properties</Heading>
         <Row gutter={[40, 40]}>
-          {properties?.map((property) => (
+          {properties.slice(0, 4).map((property) => (
             <Col key={property.id} xs={12}>
               <PropertyCard property={property} />
             </Col>

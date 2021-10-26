@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { BrowserRouter as Router, Route, RouteProps, Redirect, Switch } from 'react-router-dom';
 import { useAuth } from 'auth';
-import { Home, Login, Properties, Signup } from 'pages';
+import { CreateProperty, Home, Login, Properties, Signup } from 'pages';
 import { Spinner } from 'components';
 
 const PrivateRoute: FC<RouteProps> = ({ children, ...rest }) => {
@@ -31,11 +31,11 @@ export default () => {
         <Route exact path="/signup">
           <Signup />
         </Route>
-        <Route path="/properties">
+        <Route path="/properties" exact>
           <Properties />
         </Route>
         <PrivateRoute path="/properties/create">
-          <Home />
+          <CreateProperty />
         </PrivateRoute>
       </Switch>
     </Router>
