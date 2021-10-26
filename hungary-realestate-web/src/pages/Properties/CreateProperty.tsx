@@ -10,6 +10,11 @@ const StyledInputNumber = styled(InputNumber)`
   width: 100%;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 export const CreateProperty: FC = () => {
   const history = useHistory();
   const { createProperty } = useProperty();
@@ -39,27 +44,27 @@ export const CreateProperty: FC = () => {
                 <Input size="large" />
               </Form.Item>
             </Col>
-            <Col xs={3}>
+            <Col xs={12} md={3}>
               <Form.Item name="floor" label="Floor">
                 <Input size="large" />
               </Form.Item>
             </Col>
-            <Col xs={3}>
+            <Col xs={12} md={3}>
               <Form.Item name="number" label="Number" rules={[{ required: true }]}>
                 <Input size="large" />
               </Form.Item>
             </Col>
-            <Col xs={10}>
+            <Col xs={24} md={10}>
               <Form.Item name="street" label="Street" rules={[{ required: true }]}>
                 <Input size="large" />
               </Form.Item>
             </Col>
-            <Col xs={4}>
+            <Col xs={12} md={4}>
               <Form.Item name="city" label="City" rules={[{ required: true }]}>
                 <Input size="large" />
               </Form.Item>
             </Col>
-            <Col xs={4}>
+            <Col xs={12} md={4}>
               <Form.Item name="postcode" label="Postcode" rules={[{ required: true }]}>
                 <Input size="large" />
               </Form.Item>
@@ -100,21 +105,17 @@ export const CreateProperty: FC = () => {
                 <Input.TextArea size="large" rows={6} />
               </Form.Item>
             </Col>
-            <Col xs={4}>
-              <Form.Item>
-                <Button block size="large" type="primary" htmlType="submit">
-                  Publish
-                </Button>
-              </Form.Item>
-            </Col>
-            <Col xs={4} offset={16}>
-              <Form.Item>
-                <Button block size="large" onClick={cancel}>
-                  Cancel
-                </Button>
-              </Form.Item>
-            </Col>
           </Row>
+          <Form.Item>
+            <ButtonContainer>
+              <Button size="large" type="primary" htmlType="submit">
+                Publish
+              </Button>
+              <Button size="large" onClick={cancel}>
+                Cancel
+              </Button>
+            </ButtonContainer>
+          </Form.Item>
         </Form>
       </Container>
     </Layout>
