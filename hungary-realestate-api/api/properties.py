@@ -45,8 +45,8 @@ async def create_property(new_property: schemas.CreateProperty, db: Session = De
 
 @app01.get("/properties", response_model=Properties)
 def get_properties(db: Session = Depends(get_db), p_type: Optional[int] = None, p_city: Optional[str] = None, p_street: Optional[str] = None, p_floor: Optional[int] = None, p_rooms: Optional[int] = None, skip: int = 0, limit: int = 30):
-    results_all = properties.get_all_properties(db=db, h_type=p_type, h_city=p_city, h_street=p_street, h_floor=p_floor, h_rooms=p_rooms)
-    results = properties.get_properties(db=db, h_type=p_type, h_city=p_city, h_street=p_street, h_floor=p_floor, h_rooms=p_rooms, skip=skip, limit=limit)
+    results_all = properties.get_all_properties(db=db, type=p_type, city=p_city, street=p_street, floor=p_floor, rooms=p_rooms)
+    results = properties.get_properties(db=db, type=p_type, city=p_city, street=p_street, floor=p_floor, rooms=p_rooms, skip=skip, limit=limit)
     page_size = limit
     page_count = len(results_all)/limit
     if skip <= limit:
@@ -65,6 +65,6 @@ async def get_my_properties(token: str = Depends(oauth2_schema), db: Session = D
 
 
 @app01.put("/properties/{property_id}", dependencies=[Depends(get_my_properties)])
-def update_my_properties(db: Session = Depends(get_db), property_id: int = 0, h_type: Optional[int] = None, h_postcode: Optional[int] = None, h_city: Optional[str] = None, h_street: Optional[str] = None, h_number: Optional[int] = None, h_floor: Optional[int] = None, h_rooms: Optional[int] = None, h_rent: Optional[int] = None):
+def update_my_properties(db: Session = Depends(get_db), property_id: int = 0, p_type: Optional[int] = None, p_postcode: Optional[int] = None, p_city: Optional[str] = None, p_street: Optional[str] = None, p_number: Optional[int] = None, p_floor: Optional[int] = None, p_rooms: Optional[int] = None, p_price: Optional[int] = None):
 
-    return properties.update_property(db, property_id, h_type, h_postcode, h_city, h_street, h_number, h_floor, h_rooms, h_rent)
+    return properties.update_property(db, property_id, p_type, p_postcode, p_city, p_street, p_number, p_floor, p_rooms, p_price)

@@ -4,7 +4,7 @@ from datetime import datetime
 
 from passlib.context import CryptContext
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, String, DateTime, Integer, func, ForeignKey, Boolean
+from sqlalchemy import Column, String, DateTime, Integer, func, ForeignKey, Boolean, Text
 from sqlalchemy.orm import relationship
 
 Base = declarative_base()
@@ -34,15 +34,17 @@ class User(Base):
 
 class Property(Base):
     __tablename__ = "properties"
-    h_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    h_type = Column(Integer, nullable=False)
-    h_postcode = Column(Integer, nullable=False)
-    h_city = Column(String(30), comment="city name", nullable=False)
-    h_street = Column(String(30), comment="street name", nullable=False)
-    h_number = Column(Integer, comment="house number", nullable=False)
-    h_floor = Column(Integer, comment="in which floor", nullable=False)
-    h_rooms = Column(Integer, comment="how many bedrooms", nullable=False)
-    h_rent = Column(Integer, comment="price", nullable=False)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    type = Column(Integer, nullable=False)
+    postcode = Column(Integer, nullable=False)
+    city = Column(String(30), comment="city name", nullable=False)
+    street = Column(String(30), comment="street name", nullable=False)
+    number = Column(Integer, comment="house number", nullable=False)
+    floor = Column(Integer, comment="in which floor", nullable=False)
+    rooms = Column(Integer, comment="how many bedrooms", nullable=False)
+    price = Column(Integer, comment="price", nullable=False)
+    title = Column(String(45), nullable=False)
+    description = Column(Text(2000))
     isDeleted = Column(Boolean, nullable=False)
     isActive = Column(Boolean, nullable=False)
 
@@ -53,6 +55,6 @@ class Property(Base):
     update_at = Column(DateTime, default=datetime.now, onupdate=func.now(), comment="updated")
 
     def __repr__(self):
-        return "{" + "'h_id':'{}','h_type':'{}','h_postcode':'{}','h_city':'{}','h_street':'{}','h_number':'{}','h_floor':'{}','h_rooms':'{}','h_rent':'{}','create_at':'{}','update_at':'{}','address':'{}'".format(self.h_id ,self.h_type, self.h_postcode, self.h_city, self.h_street , self.h_number, self.h_floor, self.h_rooms, self.h_rent, self.create_at, self.update_at, str(self.h_number)+' '+self.h_street+', '+self.h_city+' '+str(self.h_postcode)) + "}"
+        return "{" + "'id':'{}','type':'{}','postcode':'{}','city':'{}','street':'{}','number':'{}','floor':'{}','rooms':'{}','price':'{}','create_at':'{}','update_at':'{}','address':'{}','image':{}".format(self.id, self.type, self.postcode, self.city, self.street, self.number, self.floor, self.rooms, self.price, self.create_at, self.update_at, str(self.number) + ' ' + self.street + ', ' + self.city + ' ' + str(self.postcode), []) + "}"
 
 

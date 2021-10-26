@@ -15,21 +15,17 @@ class CreateUser(BaseModel):
 
 
 class CreateProperty(BaseModel):
-    h_type: int = 1
-    h_postcode: int
-    h_city: str
-    h_street: str
-    h_number: int
-    h_floor: int
-    h_rooms: int = 1
-    h_rent: int
+    type: int = 1
+    postcode: int
+    city: str
+    street: str
+    number: int
+    floor: int
+    rooms: int = 1
+    price: int
     isDeleted: bool = False
     isActive: bool = True
     user_id: int
-
-
-class CreateUserInterested(BaseModel):
-    pass
 
 
 class ReadUser(CreateUser):
@@ -42,7 +38,7 @@ class ReadUser(CreateUser):
 
 
 class ReadProperty(CreateProperty):
-    h_id: int
+    id: int
     create_at: datetime
     update_at: datetime
 

@@ -2,8 +2,6 @@
 
 import uvicorn
 from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
-from sqlalchemy import func
 from starlette.middleware.cors import CORSMiddleware
 
 
