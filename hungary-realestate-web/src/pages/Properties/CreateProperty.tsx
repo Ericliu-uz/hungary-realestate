@@ -1,15 +1,10 @@
 import React, { FC } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, Col, Form, Input, InputNumber, Layout, Row, Select } from 'antd';
+import { Button, Col, Form, Input, InputNumber, Layout, message, Row, Select } from 'antd';
 import styled from 'styles';
 import { Property, useProperty } from 'context';
 import { Container, CurrencyInput, Header } from 'components';
-
-const PROPERTY_TYPES = Object.freeze([
-  { id: 'house', value: 'House' },
-  { id: 'townhouse', value: 'Townhouse' },
-  { id: 'flat', value: 'Flat' },
-]);
+import { PropertyTypes } from 'shared';
 
 const StyledInputNumber = styled(InputNumber)`
   width: 100%;
@@ -17,16 +12,21 @@ const StyledInputNumber = styled(InputNumber)`
 
 export const CreateProperty: FC = () => {
   const history = useHistory();
-  const { add } = useProperty();
+  const { createProperty } = useProperty();
 
   const initialValues = { bedrooms: 0, bathrooms: 0, garage: 0 };
 
-  const submit = (values: Property) => {
-    add(values);
-    cancel();
+  const submit = async (values: Property) => {
+    try {
+      const res = await createProperty(values);
+      message.success(res);
+      cancel();
+    } catch (err) {
+      message.error(err as string);
+    }
   };
 
-  const cancel = () => history.goBack();
+  const cancel = () => history.push('/properties');
 
   return (
     <Layout>
@@ -35,25 +35,47 @@ export const CreateProperty: FC = () => {
         <Form layout="vertical" requiredMark="optional" initialValues={initialValues} onFinish={submit}>
           <Row gutter={20}>
             <Col xs={24}>
-              <Form.Item name="title" label="Title" required rules={[{ required: true }]}>
+              <Form.Item name="title" label="Title" rules={[{ required: true }]}>
                 <Input size="large" />
               </Form.Item>
             </Col>
-            <Col xs={24}>
-              <Form.Item name="address" label="Address" required rules={[{ required: true }]}>
+            <Col xs={3}>
+              <Form.Item name="floor" label="Floor">
+                <Input size="large" />
+              </Form.Item>
+            </Col>
+            <Col xs={3}>
+              <Form.Item name="number" label="Number" rules={[{ required: true }]}>
+                <Input size="large" />
+              </Form.Item>
+            </Col>
+            <Col xs={10}>
+              <Form.Item name="street" label="Street" rules={[{ required: true }]}>
+                <Input size="large" />
+              </Form.Item>
+            </Col>
+            <Col xs={4}>
+              <Form.Item name="city" label="City" rules={[{ required: true }]}>
+                <Input size="large" />
+              </Form.Item>
+            </Col>
+            <Col xs={4}>
+              <Form.Item name="postcode" label="Postcode" rules={[{ required: true }]}>
                 <Input size="large" />
               </Form.Item>
             </Col>
             <Col xs={12}>
-              <Form.Item name="price" label="Price (p/m)" required rules={[{ required: true }]}>
-                <CurrencyInput size="large" />
+              <Form.Item name="price" label="Price" rules={[{ required: true }]}>
+                <CurrencyInput size="large" placeholder="p/m" />
               </Form.Item>
             </Col>
             <Col xs={12}>
-              <Form.Item name="type" label="Type" required rules={[{ required: true }]}>
+              <Form.Item name="type" label="Type" rules={[{ required: true }]}>
                 <Select size="large">
-                  {PROPERTY_TYPES.map((type) => (
-                    <Select.Option value={type.id}>{type.value}</Select.Option>
+                  {Object.entries(PropertyTypes).map(([id, value]) => (
+                    <Select.Option key={id} value={id}>
+                      {value}
+                    </Select.Option>
                   ))}
                 </Select>
               </Form.Item>

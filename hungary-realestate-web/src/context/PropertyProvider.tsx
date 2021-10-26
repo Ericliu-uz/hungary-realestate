@@ -1,47 +1,55 @@
 import React, { createContext, FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import axios from 'axios';
-import samplePropertiesData from './properties.json';
+import axios, { AxiosResponse } from 'axios';
+import { Message } from 'shared';
 
 export interface Property {
-  id: number;
-  title: string;
-  description?: string;
   address: string;
-  bedrooms: number;
   bathrooms: number;
+  bedrooms: number;
+  city: string;
+  create_at: Date;
+  description?: string;
   garage: number;
+  id: number;
+  images: string[] | null;
+  postcode: string;
   price: number;
+  street: string;
+  title: string;
   type: string;
-  images?: string[] | null;
+  update_at: Date;
 }
 
 interface PropertyContextModel {
   properties: Property[];
-  add: (property: Property) => void;
+  createProperty: (property: Property) => Promise<string>;
 }
 
 export const PropertyContext = createContext<PropertyContextModel>({} as PropertyContextModel);
 
 export const PropertyProvider: FC = ({ children }) => {
-  const [properties, setProperties] = useState<Property[]>(samplePropertiesData);
+  const [properties, setProperties] = useState<Property[]>([]);
 
-  const add = useCallback(
-    (property: Property) => {
-      setProperties([...properties, property]);
-    },
-    [properties],
-  );
+  const fetchProperties = async () => {
+    const res = await axios.get<never, AxiosResponse<{ results: Property[] }>>(`${process.env.REACT_APP_API_URL}api/properties`);
+    setProperties(res.data.results);
+  };
+
+  const createProperty = useCallback(async (property: Property) => {
+    try {
+      await axios.post(`${process.env.REACT_APP_API_URL}api/properties`, property);
+      await fetchProperties();
+      return Promise.resolve(Message.Success.PropertyCreated);
+    } catch (err) {
+      return Promise.reject(Message.Error.Common);
+    }
+  }, []);
 
   useEffect(() => {
-    // fetch properties
-    const fetchProperties = async () => {
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}api/properties`);
-      console.log(res);
-    };
     fetchProperties();
   }, []);
 
-  const value = useMemo(() => ({ properties, add }), [properties, add]);
+  const value = useMemo(() => ({ properties, createProperty }), [properties, createProperty]);
 
   return <PropertyContext.Provider value={value}>{children}</PropertyContext.Provider>;
 };

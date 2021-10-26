@@ -36,7 +36,7 @@ interface HeaderProps {
 }
 
 export const Header: FC<HeaderProps> = ({ transparent }) => {
-  const { authState } = useAuth();
+  const { authState, logout } = useAuth();
 
   return (
     <StyledHeader transparent={transparent}>
@@ -44,11 +44,16 @@ export const Header: FC<HeaderProps> = ({ transparent }) => {
         <LogoWithTitle height={50} />
       </LogoContainer>
       {authState.loggedIn ? (
-        <Link to="/properties/create">
-          <StyledButton size="large" type="primary">
-            Publish Property
+        <span>
+          <StyledButton size="large" type="link" onClick={logout}>
+            Logout
           </StyledButton>
-        </Link>
+          <Link to="/properties/create">
+            <StyledButton size="large" type="primary">
+              Publish Property
+            </StyledButton>
+          </Link>
+        </span>
       ) : (
         <span>
           <Link to="/login">

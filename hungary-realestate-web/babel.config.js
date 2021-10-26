@@ -11,7 +11,7 @@ module.exports = function (api) {
             components: './src/components',
             context: './src/context',
             pages: './src/pages',
-            // services: './src/services',
+            shared: './src/shared',
             styles: './src/styles',
           },
         },

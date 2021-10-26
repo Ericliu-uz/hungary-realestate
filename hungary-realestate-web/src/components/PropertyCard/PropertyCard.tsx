@@ -7,6 +7,7 @@ import { first } from 'lodash';
 import styled from 'styles';
 import { Property } from 'context';
 import { Currency } from 'components';
+import { PropertyTypes } from 'shared';
 import PropertyDefaultImage from 'assets/property-default-image.jpeg';
 
 const Container = styled.div`
@@ -82,7 +83,7 @@ export const PropertyCard: FC<PropertyCardProps> = ({ property }) => {
           <Space size={10} align="center">
             <FacilityItemWithIcon icon={HotelOutlined}>{property.bedrooms}</FacilityItemWithIcon>
             <FacilityItemWithIcon icon={BathtubOutlined}>{property.bathrooms}</FacilityItemWithIcon>
-            <FacilityItemWithIcon icon={DriveEtaOutlined}>{property.garage}</FacilityItemWithIcon>|{property.type}
+            <FacilityItemWithIcon icon={DriveEtaOutlined}>{property.garage}</FacilityItemWithIcon>|{PropertyTypes[property.type]}
           </Space>
         </Facilities>
       </Content>

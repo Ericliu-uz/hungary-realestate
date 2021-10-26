@@ -1,4 +1,4 @@
-import React, { createContext, FC, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import { fetchUser, loginAsync } from './AuthService';
 
@@ -35,7 +35,7 @@ export const AuthProvider: FC = ({ children }) => {
     bootstrapAsync();
   }, []);
 
-  const login = async (data: AuthRequestValues) => {
+  const login = useCallback(async (data: AuthRequestValues) => {
     try {
       const res = await loginAsync(data);
       await handleLogin(res.access_token);
@@ -43,7 +43,7 @@ export const AuthProvider: FC = ({ children }) => {
     } catch (error) {
       return Promise.reject(error);
     }
-  };
+  }, []);
 
   const handleLogin = async (token: string) => {
     try {
@@ -53,22 +53,16 @@ export const AuthProvider: FC = ({ children }) => {
       setAuthState({ token, user, loggedIn: true, loading: false });
     } catch (error) {
       setAuthState({ token: undefined, user: undefined, loggedIn: false, loading: false });
-      console.error(error);
     }
   };
 
   const logout = async () => {
-    try {
-      localStorage.removeItem(TOKEN_KEY);
-      removeAxiosHeader();
-      setAuthState({ token: undefined, user: undefined, loggedIn: false, loading: false });
-    } catch (error) {
-      console.error(error);
-    }
+    localStorage.removeItem(TOKEN_KEY);
+    removeAxiosHeader();
+    setAuthState({ token: undefined, user: undefined, loggedIn: false, loading: false });
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const value = useMemo(() => ({ authState, login, logout }), [authState]);
+  const value = useMemo(() => ({ authState, login, logout }), [authState, login]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

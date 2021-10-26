@@ -9,8 +9,8 @@ interface AuthResponseValues {
 
 interface UserModel {
   password: string;
-  userId: string;
-  userName: string;
+  uid: string;
+  username: string;
 }
 
 interface AuthStateModel {
@@ -24,9 +24,4 @@ interface AuthContextModel {
   authState: AuthStateModel;
   login: (params: AuthRequestValues) => Promise<string>;
   logout: VoidFunction;
-}
-
-interface UpdatePasswordValues {
-  username: string;
-  newPassword: string;
 }
